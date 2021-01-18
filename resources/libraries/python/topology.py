@@ -25,7 +25,8 @@ from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
 from resources.libraries.python.Constants import Constants
 
 __all__ = [
-    u"DICT__nodes", u"Topology", u"NodeType", u"SocketType", u"NodeSubTypeTG"
+    u"DICT__nodes", u"Topology", u"NodeType", u"SocketType", u"NodeSubTypeTG",
+    u"NodeSubTypeOS"
 ]
 
 
@@ -64,6 +65,12 @@ class NodeSubTypeTG:
     # IxNetwork
     IXNET = u"IXNET"
 
+class NodeSubTypeOS:
+    """Defines node sub-type OS - Operating System."""
+    # Linux
+    LINUX = u"LINUX"
+    # FreeBSD
+    FREEBSD = u"FREEBSD"
 
 class SocketType:
     """Defines socket types used in topology dictionaries."""
