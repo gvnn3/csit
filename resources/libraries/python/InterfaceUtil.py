@@ -13,6 +13,7 @@
 
 """Interface util library."""
 
+import re
 from time import sleep
 from enum import IntEnum
 
@@ -26,7 +27,7 @@ from resources.libraries.python.L2Util import L2Util
 from resources.libraries.python.PapiExecutor import PapiSocketExecutor
 from resources.libraries.python.parsers.JsonParser import JsonParser
 from resources.libraries.python.ssh import SSH, exec_cmd, exec_cmd_no_error
-from resources.libraries.python.topology import NodeType, Topology
+from resources.libraries.python.topology import NodeType, Topology, NodeSubTypeOS
 from resources.libraries.python.VPPUtil import VPPUtil
 
 
@@ -713,7 +714,12 @@ class InterfaceUtil:
         for if_key in Topology.get_node_interfaces(node):
             if_pci = Topology.get_interface_pci_addr(node, if_key)
             ssh.connect(node)
-            cmd = f"cat /sys/bus/pci/devices/{if_pci}/numa_node"
+            if Topology.check_ostype(node) == NodeSubTypeOS.FREEBSD:
+                device = ''.join(str(i) for i in re.findall(r'\D', if_key))
+                number = ''.join(str(i) for i in re.findall(r'\d', if_key))
+                cmd = f"sysctl -n dev.{device}.{number}.%domain"
+            else:
+                cmd = f"cat /sys/bus/pci/devices/{if_pci}/numa_node"
             for _ in range(3):
                 ret, out, _ = ssh.exec_command(cmd)
                 if ret == 0:
@@ -728,8 +734,8 @@ class InterfaceUtil:
                             node, if_key, numa_node
                         )
                         break
-            else:
-                raise RuntimeError(f"Update numa node failed for: {if_pci}")
+                else:
+                    Topology.set_interface_numa_node(node, if_key, 0)
 
     @staticmethod
     def update_all_interface_data_on_all_nodes(
