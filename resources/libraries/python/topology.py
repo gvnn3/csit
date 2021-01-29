@@ -65,12 +65,14 @@ class NodeSubTypeTG:
     # IxNetwork
     IXNET = u"IXNET"
 
+
 class NodeSubTypeOS:
     """Defines node sub-type OS - Operating System."""
     # Linux
     LINUX = u"LINUX"
     # FreeBSD
     FREEBSD = u"FREEBSD"
+
 
 class SocketType:
     """Defines socket types used in topology dictionaries."""
@@ -1148,3 +1150,24 @@ class Topology:
             if u"sockets" in list(node.keys()):
                 # Containers are disconnected and destroyed already.
                 node.pop(u"sockets")
+
+    @staticmethod
+    def check_ostype(node):
+        """Return supported OS of given node, or raise an exception.
+
+        Currently two OS types are supported, LINUX and FREEBSD.
+
+        :param node: Topology node to check. Can be None.
+        :type node: dict or NoneType
+        :returns: Subtype detected.
+        :rtype: NodeSubTypeOS
+        :raises RuntimeError: If node is not supported, message explains how.
+        """
+        if node.get(u"type") is None:
+            msg = u"Node type is not defined"
+        elif node.get(u"ostype") is None:
+            msg = u"ostype is not defined, FML"
+        else:
+            return node.get(u"ostype")
+
+        raise RuntimeError(msg)

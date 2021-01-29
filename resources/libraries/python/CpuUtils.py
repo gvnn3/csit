@@ -17,30 +17,11 @@ from robot.libraries.BuiltIn import BuiltIn
 
 from resources.libraries.python.Constants import Constants
 from resources.libraries.python.ssh import exec_cmd_no_error
-from resources.libraries.python.topology import Topology
+from .topology import Topology
 from .topology import NodeSubTypeOS
 
+
 __all__ = [u"CpuUtils"]
-
-def check_ostype(node):
-    """Return supported OS of given node, or raise an exception.
-
-    Currently two OS types are supported, LINUX and FREEBSD.
-
-    :param node: Topology node to check. Can be None.
-    :type node: dict or NoneType
-    :returns: Subtype detected.
-    :rtype: NodeSubTypeOS
-    :raises RuntimeError: If node is not supported, message explains how.
-    """
-    if node.get(u"type") is None:
-        msg = u"Node type is not defined"
-    elif node.get(u"ostype") is None:
-        msg = u"ostype is not defined, FML"
-    else:
-        return node.get(u"ostype")
-
-    raise RuntimeError(msg)
 
 class CpuUtils:
     """CPU utilities"""
@@ -96,16 +77,22 @@ class CpuUtils:
         for node in nodes.values():
             stdout, _ = exec_cmd_no_error(node, u"uname -m")
             node[u"arch"] = stdout.strip()
-            if check_ostype(node) == NodeSubTypeOS.LINUX:
+            if Topology.check_ostype(node) == NodeSubTypeOS.LINUX:
                 stdout, _ = exec_cmd_no_error(node, u"lscpu -p")
-            elif check_ostype(node) == NodeSubTypeOS.FREEBSD:
-                stdout, _ = exec_cmd_no_error(node, u"cpuset -g")
-            node[u"cpuinfo"] = list()
-            for line in stdout.split(u"\n"):
-                if line and line[0] != u"#":
-                    node[u"cpuinfo"].append(
-                        [CpuUtils.__str2int(x) for x in line.split(u",")]
-                    )
+                node[u"cpuinfo"] = list()
+                for line in stdout.split(u"\n"):
+                    if line and line[0] != u"#":
+                        node[u"cpuinfo"].append(
+                            [CpuUtils.__str2int(x) for x in line.split(u",")]
+                        )
+            elif Topology.check_ostype(node) == NodeSubTypeOS.FREEBSD:
+                # XXX - Fake the output of lscpu with sysctl
+                # For now we do not deal with caches etc. we just turn
+                # everything on with an index per CPU
+                stdout, _ = exec_cmd_no_error(node, u"sysctl -n hw.ncpu")
+                node[u"cpuinfo"] = list()
+                for index in range(0, CpuUtils.__str2int(stdout)):
+                    node[u"cpuinfo"].append([line for x in range(0,8)])
 
     @staticmethod
     def cpu_node_count(node):
