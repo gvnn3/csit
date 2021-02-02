@@ -16,10 +16,9 @@
 | Resource | resources/libraries/robot/dpdk/default.robot
 | Library | resources.libraries.python.DPDK.DPDKTools
 |
-| Force Tags | 2_NODE_DOUBLE_LINK_TOPO | PERFTEST | HW_ENV | NDRPDR | 1NUMA
-| ... | NIC_Intel-X710 | IP4FWD | BASE | ETH
+| Force Tags | 2_NODE_SINGLE_LINK_TOPO | PERFTEST | VM_ENV | NDRPDR
+| ... | IP4FWD | BASE | ETH
 | ... | DRV_VFIO_PCI
-| ... | RXQ_SIZE_1024 | TXQ_SIZE_1024
 | ... | ethip4-ip4base-l3fwd
 |
 | Suite Setup | Setup suite topology interfaces | performance
@@ -47,7 +46,7 @@
 
 *** Variables ***
 | ${crypto_type}= | ${None}
-| ${nic_name}= | Intel-X710
+| ${nic_name}= | Intel-82545EM
 | ${nic_driver}= | vfio-pci
 | ${nic_rxq_size}= | 1024
 | ${nic_txq_size}= | 1024

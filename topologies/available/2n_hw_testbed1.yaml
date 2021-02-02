@@ -31,12 +31,12 @@ nodes:
     username: test
     password: uK1Ev4m[3tdo
     interfaces:
-      port1:
+      port2:
         mac_address: "00:1c:42:28:09:0a"
         pci_address: "0000:00:06.0"
         link: link1
         model: Intel-82545EM
-      port2:
+      port3:
         mac_address: "00:1c:42:a3:89:b4"
         pci_address: "0000:00:07.0"
         link: link2
@@ -51,13 +51,13 @@ nodes:
     password: uK1Ev4m[3tdo
     uio_driver: vfio-pci
     interfaces: 
-      port1:
-        mac_address: "08:00:27:ae:29:2b"
-        pci_address: "0000:00:08.0"
+      port2:
+        mac_address: "00:1c:42:39:ac:7c"
+        pci_address: "0000:00:06.0"
         link: link1
-        model: Intel-X553
+        model: Intel-82545EM
       port3:
-        mac_address: "08:00:27:f3:be:f0"
-        pci_address: "0000:00:09.0"
+        mac_address: "00:1c:42:72:d0:d1"
+        pci_address: "0000:00:07.0"
         link: link2
-        model: Intel-X553
+        model: Intel-82545EM
