@@ -28,11 +28,11 @@
 | Test Template | Local Template
 |
 | Documentation | *Raw results IPv4 routing test cases*
-| ... | *[Top] Network Topologies:* TG-DUT1-DUT2-TG 3-node circular topology\
+| ... | *[Top] Network Topologies:* TG-DUT1-TG 2-node circular topology\
 | ... | with single links between nodes.
 | ... | *[Enc] Packet Encapsulations:* Eth-IPv4 for L3 IPv4 routing.
-| ... | *[Cfg] DUT configuration:* DUT1 and DUT2 run the DPDK l3fwd application\
-| ... | DUT1 and DUT2 tested with ${nic_name}.\
+| ... | *[Cfg] DUT configuration:* DUT1 runs vanilla network stack\
+| ... | DUT1 tested with ${nic_name}.\
 | ... | *[Ver] TG verification:* TG finds and reports throughput NDR (Non Drop\
 | ... | Rate) with zero packet loss tolerance and throughput PDR (Partial Drop\
 | ... | Rate) with non-zero packet loss tolerance (LT) expressed in percentage\
