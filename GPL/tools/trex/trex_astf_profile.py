@@ -33,7 +33,7 @@ import sys
 import time
 
 sys.path.insert(
-    0, u"/opt/trex-core-2.87/scripts/automation/trex_control_plane/interactive/"
+    0, u"/opt/trex/v2.87/automation/trex_control_plane/interactive"
 )
 from trex.astf.api import *
 
