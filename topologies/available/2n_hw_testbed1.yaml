@@ -24,6 +24,7 @@ metadata:
 nodes:
   TG:
     type: TG
+    subtype: TREX
     ostype: LINUX
     host: 10.211.55.20
     arch: x86_64
