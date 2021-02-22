@@ -322,7 +322,6 @@ class TrafficGenerator(AbstractMeasurer):
                     f"sh -c 'cat << EOF > /etc/trex_cfg.yaml\n"
                     f"- version: 2\n"
                     f"  c: {len(threads)}\n"
-                    f"  limit_memory: {Constants.TREX_LIMIT_MEMORY}\n"
                     f"  interfaces: [\"{if1[u'pci']}\",\"{if2[u'pci']}\"]\n"
                     f"  port_info:\n"
                     f"      - dest_mac: \'{if1[u'adj_addr']}\'\n"
@@ -374,7 +373,7 @@ class TrafficGenerator(AbstractMeasurer):
                     if u'Mellanox' not in port.get(u'model'):
                         ports += f" {port.get(u'pci_address')}"
 
-                cmd = f"sh -c \"cd {Constants.TREX_INSTALL_DIR}/scripts/ && " \
+                cmd = f"sh -c \"cd {Constants.TREX_INSTALL_DIR}/ && " \
                     f"./dpdk_nic_bind.py -u {ports} || true\""
                 exec_cmd_no_error(
                     tg_node, cmd, sudo=True,
@@ -382,7 +381,7 @@ class TrafficGenerator(AbstractMeasurer):
                 )
 
                 # Start TRex.
-                cd_cmd = f"cd '{Constants.TREX_INSTALL_DIR}/scripts/'"
+                cd_cmd = f"cd '{Constants.TREX_INSTALL_DIR}/'"
                 trex_cmd = OptionString([u"nohup", u"./t-rex-64"])
                 trex_cmd.add(u"-i")
                 trex_cmd.add(u"--prefix $(hostname)")
